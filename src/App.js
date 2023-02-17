@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Logo from "./assets/images/logo.svg";
 import ArrowDown from "./assets/images/icon-arrow-down.svg";
-import Moon from "./assets/images/icon-moon.svg"
+import Moon from "./assets/images/icon-moon.svg";
+import Play from "./assets/images/icon-play.svg"
 
 function App() {
   const [word, setWord] = useState("");
   const [font, setFont] = useState("sans-serif");
-  const [isLight, setIsLight] = useState(true)
+  const [isLight, setIsLight] = useState(true);
+  const [wordData, setWordData] = useState(null)
 
   const fetchWord = async () => {
     try {
@@ -15,28 +17,42 @@ function App() {
         `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
       const data = await res.json();
+      setWordData(data[0])
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+
+  },[font])
   return (
-    <div className="App" style={{fontFamily: `${font}`}}>
+    <div className="App" style={{ fontFamily: `${font}` }}>
       <div className="first-div">
         <img src={Logo} alt="Logo" />
         <div className="font-darklight-con">
           <div className="font-dropdown">
-            {
-              font == "sans-serif"?<>Sans Serif</>:font == "serif"?<>Serif</>:<>Mono</>
-            }
-           <img className="arrowdown" src={ArrowDown} alt="Drop Down Arrow" />
+            {font == "sans-serif" ? (
+              <>Sans Serif</>
+            ) : font == "serif" ? (
+              <>Serif</>
+            ) : (
+              <>Mono</>
+            )}
+            <img className="arrowdown" src={ArrowDown} alt="Drop Down Arrow" />
+            <div class="dropdown-content">
+              <a onClick={() => setFont("sans-serif")} style={{ fontFamily: `sans-serif` }} href="#">Sans Serif</a>
+              <a onClick={() => setFont("serif")} style={{ fontFamily: `serif` }} href="#">Serif</a>
+              <a onClick={() => setFont("mono")} style={{ fontFamily: `mono` }} href="#">Mono</a>
+            </div>
           </div>
           <div className="darklight-con">
             <label class="switch">
               <input onClick={() => setIsLight(!isLight)} type="checkbox" />
               <span class="slider round"></span>
             </label>
-            <img src={Moon} alt="Moon"/>
+            <img src={Moon} alt="Moon" />
           </div>
         </div>
       </div>
@@ -72,6 +88,16 @@ function App() {
           />
         </svg>
       </div>
+      {wordData === null?<></>:
+      <div className="flex justbetween aligncenter ml-3 width">
+          <div className="flex column aligncenter justbetween wordconheight">
+            <div className="mainword">{wordData.word}</div>
+            <div className="wordphon">{wordData.phonetic}</div>
+          </div>
+          
+            <img className="playButton" src={Play} alt="Play Button" />
+        
+      </div>}
     </div>
   );
 }
