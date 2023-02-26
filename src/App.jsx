@@ -5,13 +5,18 @@ import ArrowDown from "./assets/images/icon-arrow-down.svg";
 import Moon from "./assets/images/icon-moon.svg";
 import Play from "./assets/images/icon-play.svg";
 import ListItem from "./components/ListItem";
+import newwindow from "./assets/images/icon-new-window.svg";
+import "./assets/fonts/inconsolata/Inconsolata-VariableFont_wdth,wght.ttf"
+
 
 function App() {
   const [word, setWord] = useState("");
   const [font, setFont] = useState("sans-serif");
   const [isLight, setIsLight] = useState(true);
   const [wordData, setWordData] = useState(null);
-  const [definitionData, setDefintionData] = useState(null)
+  const [definitionData, setDefintionData] = useState(null);
+  const [synonyms, setSynonyms] = useState(null);
+  const [verbs, setVerbs] = useState(null);
 
   const fetchWord = async () => {
     try {
@@ -20,25 +25,27 @@ function App() {
       );
       const data = await res.json();
       setWordData(data[0]);
-      fixData(data[0].meanings[0].definitions)
+      fixData(data[0].meanings[0].definitions);
+      setVerbs(data[0].meanings[1].definitions);
+      setSynonyms([data[0].meanings[0].synonyms]);
       console.log(data);
+      console.log(data[0].meanings[0].synonyms);
+      console.log(synonyms);
     } catch (error) {
       console.log(error);
     }
   };
 
   const fixData = (array) => {
-    let dataSet = []
-    for(let i = 0; i < array.length; i++){
-      dataSet.push(array[i].definition)
+    let dataSet = [];
+    for (let i = 0; i < array.length; i++) {
+      dataSet.push(array[i].definition);
     }
 
-    setDefintionData(dataSet)
-  }
+    setDefintionData(dataSet);
+  };
 
-  useEffect(() => {
-   
-  }, [font]);
+  useEffect(() => {}, [font]);
   return (
     <div className="App" style={{ fontFamily: `${font}` }}>
       <div className="first-div">
@@ -69,8 +76,8 @@ function App() {
                 Serif
               </a>
               <a
-                onClick={() => setFont("mono")}
-                style={{ fontFamily: `mono` }}
+                onClick={() => setFont("monospace")}
+                style={{ fontFamily: `monospace` }}
                 href="#"
               >
                 Mono
@@ -134,22 +141,51 @@ function App() {
             <div className="noun">noun</div>
             <div className="grey-line"></div>
           </div>
-          <div className="meaning">
-            Meaning
-          </div>
+          <div className="meaning">Meaning</div>
           <div>
-            <ul className="nounlist">
-            {definitionData && definitionData.map((definition) => 
-            <li className="nounlistitem">{definition}</li>
-            )}
-            </ul>
+            {definitionData &&
+              definitionData.map((definition) => (
+                <div className="flex nounlistitem">
+                  <div className="point">&#x2022;</div>
+                  <div>{definition}</div>
+                </div>
+              ))}
           </div>
+          {synonyms === null ? (
+            <></>
+          ) : (
+            <div className="flex width mb-3">
+              <div className="synonyms">Synonyms</div>
+              <div>
+                {synonyms &&
+                  synonyms.map((word) => <p className="synonym"> {word} </p>)}
+              </div>
+            </div>
+          )}
+
           <div className="width flex aligncenter justbetween ml-1">
             <div className="noun">verb</div>
             <div className="grey-line"></div>
           </div>
-          <div className="meaning">
-            Meaning
+          <div className="meaning">Meaning</div>
+          <div className="width">
+            {verbs &&
+              verbs.map((verb) => (
+                <div className="flex nounlistitem">
+                  <div className="point">&#x2022;</div>
+                  <div>
+                    <div className="verbdef mb-1">{verb.definition}</div>
+                    <div className="verbexample">{verb.example}</div>
+                  </div>
+                </div>
+              ))}
+          </div>
+          <div className="width sourcediv">
+            <div>Source</div>
+            <a href={wordData.sourceUrls[0]} className="flex link">
+              <div>{wordData.sourceUrls[0]} </div>
+              <img className="click"  src={newwindow} alt="external link icon" />
+            </a>
           </div>
         </>
       )}
