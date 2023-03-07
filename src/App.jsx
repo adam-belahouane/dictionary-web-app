@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createRef } from "react";
 import "./App.css";
 import Logo from "./assets/images/logo.svg";
 import ArrowDown from "./assets/images/icon-arrow-down.svg";
 import Moon from "./assets/images/icon-moon.svg";
 import Play from "./assets/images/icon-play.svg";
-import ListItem from "./components/ListItem";
 import newwindow from "./assets/images/icon-new-window.svg";
-import "./assets/fonts/inconsolata/Inconsolata-VariableFont_wdth,wght.ttf"
-
 
 function App() {
   const [word, setWord] = useState("");
@@ -17,32 +14,59 @@ function App() {
   const [definitionData, setDefintionData] = useState(null);
   const [synonyms, setSynonyms] = useState(null);
   const [verbs, setVerbs] = useState(null);
+  const [audioSource, setAudioSource] = useState(null);
+  const audioRef = createRef();
 
   const fetchWord = async () => {
     try {
       const res = await fetch(
         `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
-      const data = await res.json();
-      setWordData(data[0]);
-      fixData(data[0].meanings[0].definitions);
-      setVerbs(data[0].meanings[1].definitions);
-      setSynonyms([data[0].meanings[0].synonyms]);
-      console.log(data);
-      console.log(data[0].meanings[0].synonyms);
-      console.log(synonyms);
+      if (res.ok) {
+        const data = await res.json();
+        setWordData(data[0]);
+        fixData(data[0].meanings[0].definitions);
+        setVerbs(data[0].meanings[1].definitions);
+        fixSynonyms([data[0].meanings[0].synonyms]);
+        findAudioSource(data[0]);
+      } else {
+        setWordData(null);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fixSynonyms = (array) => {
+    if (array.length > 1) {
+      const synonymList = array.join(", ");
+      setSynonyms(synonymList);
+    } else if (array.length === 1) {
+      // Add a condition to handle arrays with a single element
+      const wordList = array[0].join(", ");
+      setSynonyms(wordList);
+    } else {
+      setSynonyms(null);
+    }
+  };
+
   const fixData = (array) => {
-    let dataSet = [];
+    const dataSet = [];
     for (let i = 0; i < array.length; i++) {
       dataSet.push(array[i].definition);
     }
 
     setDefintionData(dataSet);
+  };
+
+  const findAudioSource = (data) => {
+    console.log(data.phonetics);
+    for (let i = 0; i < data.phonetics.length; i++) {
+      setAudioSource(null);
+      if (data.phonetics[i] !== "") {
+        setAudioSource(data.phonetics[i].audio);
+      }
+    }
   };
 
   useEffect(() => {}, [font]);
@@ -85,9 +109,9 @@ function App() {
             </div>
           </div>
           <div className="darklight-con">
-            <label class="switch">
+            <label className="switch">
               <input onClick={() => setIsLight(!isLight)} type="checkbox" />
-              <span class="slider round"></span>
+              <span className="slider round"></span>
             </label>
             <img src={Moon} alt="Moon" />
           </div>
@@ -135,7 +159,13 @@ function App() {
               <div className="wordphon">{wordData.phonetic}</div>
             </div>
 
-            <img className="playButton" src={Play} alt="Play Button" />
+            <img
+              onClick={() => audioRef.current.play()}
+              className="playButton"
+              src={Play}
+              alt="Play Button"
+            />
+            <audio src={audioSource} ref={audioRef}></audio>
           </div>
           <div className="width flex aligncenter justbetween ml-1">
             <div className="noun">noun</div>
@@ -156,10 +186,7 @@ function App() {
           ) : (
             <div className="flex width mb-3">
               <div className="synonyms">Synonyms</div>
-              <div>
-                {synonyms &&
-                  synonyms.map((word) => <p className="synonym"> {word} </p>)}
-              </div>
+              <div className="synonym">{synonyms}</div>
             </div>
           )}
 
@@ -175,7 +202,9 @@ function App() {
                   <div className="point">&#x2022;</div>
                   <div>
                     <div className="verbdef mb-1">{verb.definition}</div>
-                    <div className="verbexample">{verb.example}</div>
+                    {verb.example ? (
+                      <div className="verbexample">{verb.example}</div>
+                    ) : null}
                   </div>
                 </div>
               ))}
@@ -184,7 +213,7 @@ function App() {
             <div>Source</div>
             <a href={wordData.sourceUrls[0]} className="flex link">
               <div>{wordData.sourceUrls[0]} </div>
-              <img className="click"  src={newwindow} alt="external link icon" />
+              <img className="click" src={newwindow} alt="external link icon" />
             </a>
           </div>
         </>
