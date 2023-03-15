@@ -14,6 +14,9 @@ function App() {
   const [synonyms, setSynonyms] = useState(null);
   const [verbs, setVerbs] = useState(null);
   const [audioSource, setAudioSource] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const [is404, setIs404] = useState(false)
   const audioRef = createRef();
 
   const fetchWord = async () => {
@@ -21,31 +24,49 @@ function App() {
       const res = await fetch(
         `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
+      if (res.status === 404){
+        setIs404(true)
+      }
       if (res.ok) {
         const data = await res.json();
+        setIs404(false)
         setWordData(data[0]);
         fixData(data[0].meanings[0].definitions);
         setVerbs(data[0].meanings[1].definitions);
-        fixSynonyms([data[0].meanings[0].synonyms]);
+        setSynonyms(data[0].meanings[0].synonyms[0]);
         findAudioSource(data[0]);
       } else {
         setWordData(null);
+        setAudioSource(null);
       }
+
+      setIsEmpty(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fixSynonyms = (array) => {
-    if (array.length > 1) {
-      const synonymList = array.join(", ");
-      setSynonyms(synonymList);
-    } else if (array.length === 1) {
-      // Add a condition to handle arrays with a single element
-      const wordList = array[0].join(", ");
-      setSynonyms(wordList);
-    } else {
-      setSynonyms(null);
+  // const fixSynonyms = (array) => {
+  //   if (array.length > 1) {
+  //     const synonymList = array.join(", ");
+  //     setSynonyms(synonymList);
+  //   } else if (array.length === 1) {
+  //     // Add a condition to handle arrays with a single element
+  //     const wordList = array[0].join(", ");
+  //     setSynonyms(wordList);
+  //   } else {
+  //     setSynonyms(null);
+  //   }
+  // };
+
+  const handleMouseLeave = () => {
+    if (clicked) {
+      if (word === "") {
+        setIsEmpty(true);
+      } else {
+        setIsEmpty(false);
+      }
+      setClicked(false);
     }
   };
 
@@ -67,6 +88,10 @@ function App() {
       }
     }
   };
+
+  useEffect(() => {
+    handleMouseLeave();
+  }, [word]);
 
   useEffect(() => {}, [font]);
   return (
@@ -136,7 +161,11 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="searchbar">
+        <div
+          onClick={() => setClicked(true)}
+          onMouseLeave={handleMouseLeave}
+          className={isEmpty ? "searchbar empty" : "searchbar"}
+        >
           <input
             placeholder="Search for any word..."
             aria-label="Search-bar"
@@ -168,7 +197,14 @@ function App() {
             />
           </svg>
         </div>
-        {wordData === null ? (
+        {isEmpty ? (
+          <div className="empty-text">Whoops, can't be empty...</div>
+        ) : (
+          <div></div>
+        )}
+        {wordData === null ? is404 ? <div>
+          404 not Found
+        </div> :(
           <></>
         ) : (
           <>
@@ -191,7 +227,7 @@ function App() {
               <div className="grey-line"></div>
             </div>
             <div className="meaning">Meaning</div>
-            <div>
+            <div className="width">
               {definitionData &&
                 definitionData.map((definition) => (
                   <div className="flex nounlistitem">
