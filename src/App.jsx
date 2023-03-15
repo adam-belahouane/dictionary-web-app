@@ -203,7 +203,7 @@ function App() {
             {synonyms === null ? (
               <></>
             ) : (
-              <div className="flex width mb-3">
+              <div className="flex aligncenter width mb-3">
                 <div className="synonyms">Synonyms</div>
                 <div className="synonym">{synonyms}</div>
               </div>
@@ -231,7 +231,7 @@ function App() {
             <div className="width sourcediv">
               <div>Source</div>
               <a href={wordData.sourceUrls[0]} className="flex link">
-                <div>{wordData.sourceUrls[0]} </div>
+                <div className="source-link">{wordData.sourceUrls[0]} </div>
                 <img
                   className="click"
                   src={newwindow}

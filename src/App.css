@@ -2,6 +2,12 @@
   --Search-background-color: #f4f4f4;
   --Line-break: #e9e9e9;
   --moon-color: #757575;
+  --drop-down-background: #ffffff;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  min-height: 100vh;
 }
 
 
@@ -11,6 +17,8 @@
   --Search-background-color: #1f1f1f;
   --Line-break: #3a3a3a;
   --moon-color: #a445ed;
+  --drop-down-background: #1f1f1f;
+  --box-shadow-color: #a445ed;
 }
 
 .moon {
@@ -50,6 +58,13 @@
   margin: 0;
   font-size: 16px;
   font-weight: bold;
+  border-bottom: solid 1px transparent ;
+}
+
+.synonym:hover {
+  cursor: pointer;
+  border-bottom: solid 1px #a445ed ;
+  box-sizing: border-box;
 }
 
 .mb-3 {
@@ -99,10 +114,18 @@
   margin-bottom: 8px;
 }
 
-a > div {
+.source-link {
   cursor: pointer;
-  border-bottom: solid 1px lightgray;
   margin-right: 9px;
+  font-size: 14px;
+  border-bottom: solid 1px #757575;
+  line-height: 17px;
+  height: min-content;
+}
+
+.link {
+  display: flex;
+  align-items: center;
 }
 
 a {
@@ -111,6 +134,8 @@ a {
 
 .click {
   cursor: pointer;
+  width: 12px;
+  height: 12px;
 }
 
 .noun {
@@ -147,14 +172,11 @@ a {
   font-size: 18px;
   text-align: left;
   width: 100%;
+  margin-top: 8px;
 }
 
 .width {
   width: 100%;
-}
-
-.wordconheight {
-  height: 68px;
 }
 
 .flex {
@@ -204,11 +226,12 @@ a {
   line-height: 17px;
   font-weight: bold;
   padding: 0 20px;
-  box-sizing: border-box;
 }
 
 .searchbar-input {
   all: unset;
+  width: 100%;
+  caret-color: #8f19e8;
 }
 
 .searchbar:focus-within {
@@ -289,12 +312,13 @@ input:checked + .slider:before {
   display: none;
   position: absolute;
   top: 35px;
+  background-color: var(--drop-down-background);
   right: 100px;
-  background-color: #ffffff;
-  min-width: 160px;
-  box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.1);
+  width: 140px;
+  box-shadow: 0px 5px 30px 0px var(--box-shadow-color);
   z-index: 1;
   border-radius: 16px;
+  padding: 24px;
 }
 
 .font-dropdown:hover .dropdown-content {
@@ -302,10 +326,20 @@ input:checked + .slider:before {
 }
 
 .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
   text-decoration: none;
   display: block;
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.dropdown-content a:hover {
+  color: #a445ed;
+}
+
+.dropdown-content a:nth-child(1) {
+  margin-top: 0;
 }
 
 .darklight-con {
@@ -322,4 +356,90 @@ input:checked + .slider:before {
 
 .arrowdown {
   margin: 0 12px;
+}
+
+@media (min-width: 700px) {
+  .font-dropdown {
+    font-size: 18px;
+  }
+  .mainword{
+    font-size: 64px;
+  }
+
+  .first-div {
+    margin: 48px 0;
+  }
+
+  .grey-line {
+    width: 90%;
+  }
+
+  .ml-3 {
+    margin: 43px;
+  }
+
+  .mb-3{
+    margin-top: 40px;
+    margin-bottom: 32px;
+  }
+
+  .playButton{
+    width: 75px;
+    height: 75px;
+  }
+
+  .wordphon{
+    font-size: 24px;
+  }
+
+  .noun{
+    font-size: 24px;
+  }
+
+  .meaning{
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+
+  }
+
+  .nounlistitem{
+    font-size: 18px;
+    margin-left: 22px;
+  }
+
+  .sourcediv {
+    font-size: 18px;
+  }
+
+  .synonym{
+    font-size: 20px;
+  }
+  
+  .synonyms{
+    font-size: 20px;
+  }
+
+  .verbexample {
+    font-size: 18px;
+  }
+
+  .sourcediv {
+    display: flex;
+    flex-direction: row;
+    margin-top: 18px;
+  }
+
+  .sourcediv > div:nth-child(1) {
+    margin: 0;
+    margin-right: 20px;
+    font-size: 14px;
+  }
+}
+
+
+@media (min-width: 1000px) {
+  .App {
+    width: 50%;
+  }
 }
