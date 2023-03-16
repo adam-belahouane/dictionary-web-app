@@ -2,7 +2,6 @@ import { useState, useEffect, createRef } from "react";
 import "./App.css";
 import Logo from "./assets/images/logo.svg";
 import ArrowDown from "./assets/images/icon-arrow-down.svg";
-import Play from "./assets/images/icon-play.svg";
 import newwindow from "./assets/images/icon-new-window.svg";
 
 function App() {
@@ -16,7 +15,7 @@ function App() {
   const [audioSource, setAudioSource] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const [clicked, setClicked] = useState(false);
-  const [is404, setIs404] = useState(false)
+  const [is404, setIs404] = useState(false);
   const audioRef = createRef();
 
   const fetchWord = async () => {
@@ -24,12 +23,12 @@ function App() {
       const res = await fetch(
         `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
-      if (res.status === 404){
-        setIs404(true)
+      if (res.status === 404) {
+        setIs404(true);
       }
       if (res.ok) {
         const data = await res.json();
-        setIs404(false)
+        setIs404(false);
         setWordData(data[0]);
         fixData(data[0].meanings[0].definitions);
         setVerbs(data[0].meanings[1].definitions);
@@ -101,9 +100,9 @@ function App() {
           <img src={Logo} alt="Logo" />
           <div className="font-darklight-con">
             <div className="font-dropdown">
-              {font == "sans-serif" ? (
+              {font === "sans-serif" ? (
                 <>Sans Serif</>
-              ) : font == "serif" ? (
+              ) : font === "serif" ? (
                 <>Serif</>
               ) : (
                 <>Mono</>
@@ -114,27 +113,24 @@ function App() {
                 alt="Drop Down Arrow"
               />
               <div class="dropdown-content">
-                <a
+                <div
                   onClick={() => setFont("sans-serif")}
                   style={{ fontFamily: `sans-serif` }}
-                  href="#"
                 >
                   Sans Serif
-                </a>
-                <a
+                </div>
+                <div
                   onClick={() => setFont("serif")}
                   style={{ fontFamily: `serif` }}
-                  href="#"
                 >
                   Serif
-                </a>
-                <a
+                </div>
+                <div
                   onClick={() => setFont("monospace")}
                   style={{ fontFamily: `monospace` }}
-                  href="#"
                 >
                   Mono
-                </a>
+                </div>
               </div>
             </div>
             <div className="darklight-con">
@@ -174,7 +170,7 @@ function App() {
             value={word}
             onChange={(e) => setWord(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key == "Enter") {
+              if (e.key === "Enter") {
                 fetchWord();
               }
             }}
@@ -202,10 +198,19 @@ function App() {
         ) : (
           <div></div>
         )}
-        {wordData === null ? is404 ? <div>
-          404 not Found
-        </div> :(
-          <></>
+        {wordData === null ? (
+          is404 ? (
+            <div className="not-found width flex aligncenter column">
+              <div>No Definitions Found</div>
+              <div>
+                Sorry, we couldn't find definitions for the word you were
+                looking for. You can try the search again at later time or head
+                to the web instead.
+              </div>
+            </div>
+          ) : (
+            <></>
+          )
         ) : (
           <>
             <div className="flex justbetween aligncenter ml-3 width">
@@ -213,13 +218,25 @@ function App() {
                 <div className="mainword">{wordData.word}</div>
                 <div className="wordphon">{wordData.phonetic}</div>
               </div>
-
-              <img
+              <svg
+              onClick={() => audioRef.current.play()}
+              className="playButton"
+                xmlns="http://www.w3.org/2000/svg"
+                width="75"
+                height="75"
+                viewBox="0 0 75 75"
+              >
+                <g fill-rule="evenodd">
+                  <circle className="circle" cx="37.5" cy="37.5" r="37.5" opacity=".25" />
+                  <path d="M29 27v21l21-10.5z" />
+                </g>
+              </svg>
+              {/* <img
                 onClick={() => audioRef.current.play()}
                 className="playButton"
                 src={Play}
                 alt="Play Button"
-              />
+              /> */}
               <audio src={audioSource} ref={audioRef}></audio>
             </div>
             <div className="width flex aligncenter justbetween ml-1">
