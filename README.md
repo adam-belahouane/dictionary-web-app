@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Dictionary Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple web app that allows users to look up definitions of words. The app is built using React and is designed to be lightweight, responsive, and easy to use.
 
-## Available Scripts
+## Live Demo
 
-In the project directory, you can run:
+You can check out a live demo of the app at https://adams-dictionary.vercel.app/. 
 
-### `npm start`
+## How to Use
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Enter the word you want to look up in the search bar and click on the search button.
+2. The definition of the word will be displayed below the search bar.
+3. To look up another word, simply enter the new word in the search bar and click on the search button again.
+4. To switch between light and dark modes, click on the toggle button in the top right corner of the screen.
+5. To change the font used on the site, click on the font drop-down menu in the top left corner of the screen and select the desired font.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- React
+- HTML
+- CSS
+- JavaScript
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running the App Locally
 
-### `npm run build`
+To run the app locally, follow these steps:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Clone the repository to your local machine using the following command:
+````
+git clone https://github.com/adam-belahouane/dictionary-web-app.git
+````
+2. Navigate to the project directory:
+````
+cd dictionary-web-app
+````
+3. Install the required dependencies:
+````
+npm install
+````
+4. Start the app:
+````
+npm start
+````
